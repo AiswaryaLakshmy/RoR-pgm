@@ -11,7 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160705124543) do
+ActiveRecord::Schema.define(version: 20160707065657) do
+
+  create_table "account_histories", force: :cascade do |t|
+    t.integer  "bank_id"
+    t.integer  "credit_rating"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "account_histories", ["bank_id"], name: "index_account_histories_on_bank_id"
 
   create_table "accounts", force: :cascade do |t|
     t.integer  "supplier_id"
@@ -40,6 +49,29 @@ ActiveRecord::Schema.define(version: 20160705124543) do
     t.datetime "updated_at"
   end
 
+  create_table "assemblies", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "assemblies_parts", id: false, force: :cascade do |t|
+    t.integer "assembly_id"
+    t.integer "part_id"
+  end
+
+  add_index "assemblies_parts", ["assembly_id"], name: "index_assemblies_parts_on_assembly_id"
+  add_index "assemblies_parts", ["part_id"], name: "index_assemblies_parts_on_part_id"
+
+  create_table "banks", force: :cascade do |t|
+    t.integer  "customer_id"
+    t.string   "account_number"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "banks", ["customer_id"], name: "index_banks_on_customer_id"
+
   create_table "comments", force: :cascade do |t|
     t.string   "commenter"
     t.text     "body"
@@ -49,6 +81,18 @@ ActiveRecord::Schema.define(version: 20160705124543) do
   end
 
   add_index "comments", ["article_id"], name: "index_comments_on_article_id"
+
+  create_table "customers", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "parts", force: :cascade do |t|
+    t.string   "part_number"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
   create_table "patients", force: :cascade do |t|
     t.string   "name"
